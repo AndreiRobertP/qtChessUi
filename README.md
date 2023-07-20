@@ -18,3 +18,10 @@ Pentru creare proiect nou → Qt Widgets Application
 ![Capture4](https://github.com/AndreiRobertP/qtChessUi/assets/115709086/f2b8dee9-ec8a-4f23-aacf-5e283264dce5)
 
 Ar fi bine sa adaugati la gitignore: https://github.com/github/gitignore/blob/main/Qt.gitignore
+
+## Fisiere importante:
+ChessUIQt .h/.cpp
+GridButton .h/.cpp
+Folder res/
+main.cpp
+Enums.h (poate fi inlocuit)
