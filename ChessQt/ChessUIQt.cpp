@@ -1,4 +1,7 @@
 #include "ChessUIQt.h"
+#include "ChessUIQt.h"
+#include <QInputDialog>
+#include <QMessageBox>
 
 
 ChessUIQt::ChessUIQt(QWidget *parent)
@@ -21,7 +24,10 @@ ChessUIQt::ChessUIQt(QWidget *parent)
 }
 
 ChessUIQt::~ChessUIQt()
-{}
+{
+    //No delete?
+    //https://doc.qt.io/qt-6/objecttrees.html
+}
 
 void ChessUIQt::InitializeMessage(QGridLayout * mainGridLayout)
 {
@@ -38,6 +44,7 @@ void ChessUIQt::InitializeButtons(QGridLayout* mainGridLayout)
     QPushButton* saveButton = new QPushButton("Save");
     QPushButton* loadButton = new QPushButton("Load");
     QPushButton* restartButton = new QPushButton("Restart");
+    QPushButton* drawButton = new QPushButton("Draw");
 
     QWidget* buttonContainer = new QWidget();
     QGridLayout* btnGrid = new QGridLayout();
@@ -45,10 +52,12 @@ void ChessUIQt::InitializeButtons(QGridLayout* mainGridLayout)
     btnGrid->addWidget(saveButton, 0, 0);
     btnGrid->addWidget(loadButton, 0, 1);
     btnGrid->addWidget(restartButton, 0, 2);
+    btnGrid->addWidget(drawButton, 0, 3);
 
     connect(saveButton, &QPushButton::pressed, this, &ChessUIQt::OnSaveButtonClicked);
     connect(loadButton, &QPushButton::pressed, this, &ChessUIQt::OnLoadButtonClicked);
     connect(restartButton, &QPushButton::pressed, this, &ChessUIQt::OnRestartButtonClicked);
+    connect(drawButton, &QPushButton::pressed, this, &ChessUIQt::OnDrawButtonClicked);
 
     buttonContainer->setLayout(btnGrid);
     mainGridLayout->addWidget(buttonContainer, 0, 0, 1, 1);
@@ -61,18 +70,23 @@ void ChessUIQt::InitializeTimers(QGridLayout* mainGridLayout)
 
     QLabel* blackTimerLbl = new QLabel("Black timer: ");
     m_BlackTimer = new QLabel("00:00:00");
-    QLabel* whiteTimerLbl = new QLabel("|    White timer: ");
+
+    QPushButton* pauseTimerBtn = new QPushButton(" Pause | Resume");
+    //TODO Create slot and connect button
+
+    QLabel* whiteTimerLbl = new QLabel("    White timer: ");
     m_WhiteTimer = new QLabel("00:00:00");
 
-    timerContainer->setFixedWidth(280);
+    timerContainer->setFixedWidth(400);
 
     timerGrid->addWidget(blackTimerLbl, 0, 0);
     timerGrid->addWidget(m_BlackTimer, 0, 1);
-    timerGrid->addWidget(whiteTimerLbl, 0, 2);
-    timerGrid->addWidget(m_WhiteTimer, 0, 3);
+    timerGrid->addWidget(pauseTimerBtn, 0, 2);
+    timerGrid->addWidget(whiteTimerLbl, 0, 3);
+    timerGrid->addWidget(m_WhiteTimer, 0, 4);
 
     timerContainer->setLayout(timerGrid);
-    mainGridLayout->addWidget(timerContainer, 0, 2, 1, 1);
+    mainGridLayout->addWidget(timerContainer, 2, 0, 1, 2, Qt::AlignCenter);
 }
 
 void ChessUIQt::InitializeHistory(QGridLayout* mainGridLayout)
@@ -99,7 +113,7 @@ void ChessUIQt::InitializeBoard(QGridLayout* mainGridLayout)
     }
 
     board->setLayout(chessGridLayout);
-    mainGridLayout->addWidget(board, 1, 1, 1, 2);
+    mainGridLayout->addWidget(board, 1, 1, 1, 1);
 }
 
 void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)
@@ -107,7 +121,7 @@ void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)
     //At second click
     if (m_selectedCell.has_value()) {
         //TODO COMPLETE ME...
-        // game.MakeMove(position);
+        // game.MakeMove(...);
 
         //Unselect prev. pressed button
         m_grid[m_selectedCell.value().first][m_selectedCell.value().second]->setSelected(false);
@@ -117,12 +131,16 @@ void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)
     else {
         m_selectedCell = position;
         m_grid[position.first][position.second]->setSelected(true);
+
+        //TODO Show possible moves here
+        //HighlightPossibleMoves(game.GetPossibleMoves(...))
     }
 }
 
 void ChessUIQt::OnSaveButtonClicked()
 {
     //TODO ...
+
 }
 
 void ChessUIQt::OnLoadButtonClicked()
@@ -133,6 +151,19 @@ void ChessUIQt::OnLoadButtonClicked()
 void ChessUIQt::OnRestartButtonClicked()
 {
     //TODO ...
+}
+
+void ChessUIQt::OnDrawButtonClicked()
+{
+    //TODO MODIFY ME
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Draw proposal", "Do you accept a draw?", QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        //TODO ...
+        //game.Draw(...);
+    }
 }
 
 void ChessUIQt::OnHistoryClicked(QListWidgetItem* item)
@@ -176,5 +207,33 @@ void ChessUIQt::StartGame()
 {
     //TODO MODIFY ME OR DELETE ME
     UpdateBoard(Helper::getDefaultBoard());
+}
+
+void ChessUIQt::ShowPromoteOptions()
+{
+    QInputDialog dialog;
+    QList<QString> options;
+    options.append("Rook");
+    options.append("Bishop");
+    options.append("Queen");
+    options.append("Knight");
+
+    dialog.setComboBoxItems(options);
+    dialog.setModal(true);
+
+    bool ok;
+    QString item = QInputDialog::getItem(this, tr("Pawn promote"),
+        tr("Promote pawn to: "), options, 0, false, &ok);
+
+    if (ok && !item.isEmpty())
+    {
+        //TODO
+        //game.promotePawn(parseQStringToPieceType(item))
+
+        //TODO DELETE ME...
+        QMessageBox notification;
+        notification.setText("You selected " + item);
+        notification.exec();
+    }
 }
 

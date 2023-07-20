@@ -30,6 +30,7 @@ public:
     void HighlightPossibleMoves(const std::vector<std::pair<int, int>>& possibleMoves);
     //Modify or delete
     void StartGame();
+    void ShowPromoteOptions();
 
 public slots:
     void OnButtonClicked(const std::pair<int, int>& position);
@@ -37,6 +38,7 @@ public slots:
     void OnSaveButtonClicked();
     void OnLoadButtonClicked();
     void OnRestartButtonClicked();
+    void OnDrawButtonClicked();
     void OnHistoryClicked(QListWidgetItem* item);
     
 

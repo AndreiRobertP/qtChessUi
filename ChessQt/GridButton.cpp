@@ -74,7 +74,7 @@ void GridButton::updateBackgroundColor()
 	if (m_Selected)
 		backColor = "#ff9494";
 
-	setStyleSheet("background-color: " + backColor + ";");
+	setStyleSheet("background-color: " + backColor + "; border: none;");
 }
 
 void GridButton::setPiece(std::pair<PieceType, PieceColor> newPiece)
