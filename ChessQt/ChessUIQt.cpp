@@ -61,10 +61,10 @@ void ChessUIQt::InitializeTimers(QGridLayout* mainGridLayout)
 
     QLabel* blackTimerLbl = new QLabel("Black timer: ");
     m_BlackTimer = new QLabel("00:00:00");
-    QLabel* whiteTimerLbl = new QLabel("|        White timer: ");
+    QLabel* whiteTimerLbl = new QLabel("|    White timer: ");
     m_WhiteTimer = new QLabel("00:00:00");
 
-    timerContainer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    timerContainer->setFixedWidth(280);
 
     timerGrid->addWidget(blackTimerLbl, 0, 0);
     timerGrid->addWidget(m_BlackTimer, 0, 1);
