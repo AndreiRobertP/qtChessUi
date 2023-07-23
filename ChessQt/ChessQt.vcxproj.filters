@@ -26,9 +26,6 @@
     <QtRcc Include="ChessUIQt.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="ChessUIQt.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtMoc Include="ChessUIQt.h">
       <Filter>Header Files</Filter>
     </QtMoc>

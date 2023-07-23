@@ -7,8 +7,6 @@
 ChessUIQt::ChessUIQt(QWidget *parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this);
-   
     //Widget containing everything
     QWidget* mainWidget = new QWidget();
     QGridLayout* mainGridLayout = new QGridLayout();

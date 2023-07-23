@@ -1,10 +1,8 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_ChessUIQt.h"
 #include "GridButton.h"
 #include <QtWidgets/qgridlayout.h>
-#include <QPushButton>
 #include <QLabel>
 #include <QListWidget>
 
@@ -46,7 +44,6 @@ signals:
     void Exit();
 
 private:
-    Ui::ChessUIQtClass ui;
     std::array<std::array<GridButton*, 8>, 8> m_grid;
     std::optional<std::pair<int, int>> m_selectedCell;
     QLabel* m_MessageLabel;
