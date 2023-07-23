@@ -25,3 +25,7 @@ GridButton .h/.cpp
 Folder res/
 main.cpp
 Enums.h (poate fi inlocuit)
+
+## Layout
+![image](https://github.com/AndreiRobertP/qtChessUi/assets/115709086/9d639d4a-7c81-456d-bb50-a20901e51540)
+
