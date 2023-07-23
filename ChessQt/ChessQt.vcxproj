@@ -83,8 +83,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtRcc Include="ChessUIQt.qrc" />
-    <QtUic Include="ChessUIQt.ui" />
     <QtMoc Include="ChessUIQt.h" />
     <ClCompile Include="ChessUIQt.cpp" />
     <ClCompile Include="GridButton.cpp" />

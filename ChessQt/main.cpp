@@ -7,7 +7,5 @@ int main(int argc, char *argv[])
     ChessUIQt w;
     w.show();
     w.StartGame();
-
-    QObject::connect(&w, &ChessUIQt::Exit, &a, &QApplication::quit);
     return a.exec();
 }

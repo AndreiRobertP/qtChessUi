@@ -38,10 +38,6 @@ public slots:
     void OnRestartButtonClicked();
     void OnDrawButtonClicked();
     void OnHistoryClicked(QListWidgetItem* item);
-    
-
-signals:
-    void Exit();
 
 private:
     std::array<std::array<GridButton*, 8>, 8> m_grid;
