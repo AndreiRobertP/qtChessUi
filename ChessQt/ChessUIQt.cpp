@@ -1,5 +1,4 @@
 #include "ChessUIQt.h"
-#include "ChessUIQt.h"
 #include <QInputDialog>
 #include <QMessageBox>
 
@@ -89,17 +88,16 @@ void ChessUIQt::InitializeTimers(QGridLayout* mainGridLayout)
 
 void ChessUIQt::InitializeHistory(QGridLayout* mainGridLayout)
 {
-    m_MovesList = new QListWidget();
-    m_MovesList->setMinimumWidth(250);
-    m_MovesList->setMaximumWidth(350);
-    connect(m_MovesList, &QListWidget::itemActivated, this, &ChessUIQt::OnHistoryClicked);
-    mainGridLayout->addWidget(m_MovesList, 1, 0, 1, 1);
+    m_HistoryList = new QListWidget();
+    m_HistoryList->setMinimumWidth(250);
+    m_HistoryList->setMaximumWidth(350);
+    connect(m_HistoryList, &QListWidget::itemActivated, this, &ChessUIQt::OnHistoryClicked);
+    mainGridLayout->addWidget(m_HistoryList, 1, 0, 1, 1);
 }
 
 void ChessUIQt::InitializeBoard(QGridLayout* mainGridLayout)
 {
-    QGridLayout* chessGridLayout;
-    chessGridLayout = new QGridLayout();
+    QGridLayout* chessGridLayout = new QGridLayout();
     QWidget* board = new QWidget();
 
     for (int i = 0; i < 8; i++) {
@@ -166,19 +164,19 @@ void ChessUIQt::OnDrawButtonClicked()
 
 void ChessUIQt::OnHistoryClicked(QListWidgetItem* item)
 {
-    int index = m_MovesList->currentRow();
+    int index = m_HistoryList->currentRow();
     
     //TODO ...
 }
 
 void ChessUIQt::UpdateHistory()
 {
-    m_MovesList->clear();
+    m_HistoryList->clear();
 
     //TODO modify me...
     int numMoves = 10;
     for (int i = 0; i < numMoves; i++) {
-        m_MovesList->addItem("#1   Color: Black   Move: A1 A2");
+        m_HistoryList->addItem("#1   Color: Black   Move: A1 A2");
     }
 }
 

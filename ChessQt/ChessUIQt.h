@@ -47,7 +47,7 @@ private:
     std::array<std::array<GridButton*, 8>, 8> m_grid;
     std::optional<std::pair<int, int>> m_selectedCell;
     QLabel* m_MessageLabel;
-    QListWidget* m_MovesList;
+    QListWidget* m_HistoryList;
     QLabel* m_BlackTimer, *m_WhiteTimer;
 };
 
