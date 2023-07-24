@@ -23,31 +23,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="ChessUIQt.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="ChessUIQt.cpp">
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessLink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GridButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="GridButton.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Enums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChessUiQtListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IChessUiQt.h">
+    <ClInclude Include="ChessLink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,8 +1,5 @@
 #include "ChessUIQt.h"
-#include <QInputDialog>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <exception>
+
 
 IChessUiQtPtr IChessUiQt::Produce() {
     return std::make_shared<ChessUIQt>();
@@ -115,6 +112,11 @@ void ChessUIQt::InitializeBoard(QGridLayout* mainGridLayout)
 
     board->setLayout(chessGridLayout);
     mainGridLayout->addWidget(board, 1, 1, 1, 1);
+}
+
+void ChessUIQt::show()
+{
+    QMainWindow::show();
 }
 
 void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)

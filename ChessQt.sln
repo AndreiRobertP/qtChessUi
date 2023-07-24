@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.33801.447
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChessQt", "ChessQt\ChessQt.vcxproj", "{49352C05-B965-4275-9A37-42418BDA15BD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chess_Qt_Link", "Chess_Qt_Link\Chess_Qt_Link.vcxproj", "{6BF9D815-C2F6-48C3-B21F-128E57D7F22B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{49352C05-B965-4275-9A37-42418BDA15BD}.Debug|x64.Build.0 = Debug|x64
 		{49352C05-B965-4275-9A37-42418BDA15BD}.Release|x64.ActiveCfg = Release|x64
 		{49352C05-B965-4275-9A37-42418BDA15BD}.Release|x64.Build.0 = Release|x64
+		{6BF9D815-C2F6-48C3-B21F-128E57D7F22B}.Debug|x64.ActiveCfg = Debug|x64
+		{6BF9D815-C2F6-48C3-B21F-128E57D7F22B}.Debug|x64.Build.0 = Debug|x64
+		{6BF9D815-C2F6-48C3-B21F-128E57D7F22B}.Release|x64.ActiveCfg = Release|x64
+		{6BF9D815-C2F6-48C3-B21F-128E57D7F22B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

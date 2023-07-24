@@ -5,6 +5,10 @@
 #include <QtWidgets/qgridlayout.h>
 #include <QLabel>
 #include <QListWidget>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <exception>
 
 #include "IChessUiQt.h"
 
@@ -35,6 +39,8 @@ private:
     void InitializeTimers(QGridLayout* mainGridLayout);
     void InitializeHistory(QGridLayout* mainGridLayout);
     void InitializeBoard(QGridLayout* mainGridLayout);
+
+    void show() override;
 
 private slots:
     void OnButtonClicked(const std::pair<int, int>& position);
