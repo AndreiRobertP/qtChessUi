@@ -6,7 +6,9 @@
 #include <QLabel>
 #include <QListWidget>
 
-class ChessUIQt : public QMainWindow
+#include "IChessUiQt.h"
+
+class ChessUIQt : public QMainWindow, public IChessUiQt
 {
     Q_OBJECT
 
@@ -14,23 +16,26 @@ public:
     ChessUIQt(QWidget *parent = nullptr);
     ~ChessUIQt() override;
 
+    void UpdateHistory(const std::vector<std::string>& history) override;
+    void UpdateBoard(const BoardRepresentation& newBoard) override;
+    void HighlightPossibleMoves(const std::vector<std::pair<int, int>>& possibleMoves) override;
+    void StartGame() override;
+    void ShowPromoteOptions() override;
+    void SetMessageLabel(const std::string& value) override;
+    void SetTimer(const std::string& value, PieceColor color) override;
+    void ResetSelected();
+
+    void AddListener(ChessUiQtListener* listener) override;
+    void RemoveListener(ChessUiQtListener* listener) override;
+
+private:
     void InitializeMessage(QGridLayout* mainGridLayout);
     void InitializeButtons(QGridLayout* mainGridLayout);
     void InitializeTimers(QGridLayout* mainGridLayout);
     void InitializeHistory(QGridLayout* mainGridLayout);
     void InitializeBoard(QGridLayout* mainGridLayout);
 
-    //Modify if necessary with your history representation
-    void UpdateHistory();
-    //Modify if necessary with your board representation
-    void UpdateBoard(const std::array<std::array<std::pair<PieceType, PieceColor>, 8>, 8>& newBoard);
-    //Modify if necessary with your possible moves representation
-    void HighlightPossibleMoves(const std::vector<std::pair<int, int>>& possibleMoves);
-    //Modify or delete
-    void StartGame();
-    void ShowPromoteOptions();
-
-public slots:
+private slots:
     void OnButtonClicked(const std::pair<int, int>& position);
 
     void OnSaveButtonClicked();
@@ -38,6 +43,7 @@ public slots:
     void OnRestartButtonClicked();
     void OnDrawButtonClicked();
     void OnHistoryClicked(QListWidgetItem* item);
+    void OnPauseButtonClicked();
 
 private:
     std::array<std::array<GridButton*, 8>, 8> m_grid;
@@ -45,6 +51,7 @@ private:
     QLabel* m_MessageLabel;
     QListWidget* m_HistoryList;
     QLabel* m_BlackTimer, *m_WhiteTimer;
+    std::vector<ChessUiQtListener*> m_Listeners;
 };
 
 //TODO REMOVE THIS AFTER IMPLEMENTATION

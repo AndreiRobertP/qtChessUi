@@ -47,5 +47,11 @@
     <ClInclude Include="Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ChessUiQtListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IChessUiQt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

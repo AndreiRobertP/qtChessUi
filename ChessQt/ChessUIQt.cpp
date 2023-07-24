@@ -1,7 +1,12 @@
 #include "ChessUIQt.h"
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <exception>
 
+IChessUiQtPtr IChessUiQt::Produce() {
+    return std::make_shared<ChessUIQt>();
+}
 
 ChessUIQt::ChessUIQt(QWidget *parent)
     : QMainWindow(parent)
@@ -69,7 +74,7 @@ void ChessUIQt::InitializeTimers(QGridLayout* mainGridLayout)
     m_BlackTimer = new QLabel("00:00:00");
 
     QPushButton* pauseTimerBtn = new QPushButton(" Pause | Resume");
-    //TODO Create slot and connect button
+    connect(pauseTimerBtn, &QPushButton::pressed, this, &ChessUIQt::OnPauseButtonClicked);
 
     QLabel* whiteTimerLbl = new QLabel("    White timer: ");
     m_WhiteTimer = new QLabel("00:00:00");
@@ -116,8 +121,9 @@ void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)
 {
     //At second click
     if (m_selectedCell.has_value()) {
-        //TODO COMPLETE ME...
-        // game.MakeMove(...);
+        for (const auto& listener : m_Listeners) {
+            listener->OnButtonClicked(position, false);
+        }
 
         //Unselect prev. pressed button
         m_grid[m_selectedCell.value().first][m_selectedCell.value().second]->setSelected(false);
@@ -128,37 +134,58 @@ void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)
         m_selectedCell = position;
         m_grid[position.first][position.second]->setSelected(true);
 
-        //TODO Show possible moves here
-        //HighlightPossibleMoves(game.GetPossibleMoves(...))
+        for (const auto& listener : m_Listeners) {
+            listener->OnButtonClicked(position, true);
+        }
     }
 }
 
 void ChessUIQt::OnSaveButtonClicked()
 {
-    //TODO ...
-
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    
+    QStringList fileNames;
+    if (dialog.exec())
+        fileNames = dialog.selectedFiles();
 }
 
 void ChessUIQt::OnLoadButtonClicked()
 {
-    //TODO ...
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+
+    QStringList fileNames;
+    if (dialog.exec())
+        fileNames = dialog.selectedFiles();
 }
 
 void ChessUIQt::OnRestartButtonClicked()
 {
-    //TODO ...
+    for (const auto& listener : m_Listeners) {
+        listener->OnUiEvent(RestartButtonClicked);
+    }
 }
 
 void ChessUIQt::OnDrawButtonClicked()
 {
-    //TODO MODIFY ME
+    for (const auto& listener : m_Listeners) {
+        listener->OnUiEvent(DrawProposed);
+    }
 
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Draw proposal", "Do you accept a draw?", QMessageBox::Yes | QMessageBox::No);
 
+    UiEvent option;
     if (reply == QMessageBox::Yes) {
-        //TODO ...
-        //game.Draw(...);
+        option = DrawAccepted;
+    }
+    else {
+        option = DrawDenied;
+    }
+
+    for (const auto& listener : m_Listeners) {
+        listener->OnUiEvent(option);
     }
 }
 
@@ -166,21 +193,28 @@ void ChessUIQt::OnHistoryClicked(QListWidgetItem* item)
 {
     int index = m_HistoryList->currentRow();
     
-    //TODO ...
-}
-
-void ChessUIQt::UpdateHistory()
-{
-    m_HistoryList->clear();
-
-    //TODO modify me...
-    int numMoves = 10;
-    for (int i = 0; i < numMoves; i++) {
-        m_HistoryList->addItem("#1   Color: Black   Move: A1 A2");
+    for (const auto& listener : m_Listeners) {
+        listener->OnHistoryClicked(index);
     }
 }
 
-void ChessUIQt::UpdateBoard(const std::array<std::array<std::pair<PieceType, PieceColor>, 8>, 8>& newBoard)
+void ChessUIQt::OnPauseButtonClicked()
+{
+    for (const auto& listener : m_Listeners) {
+        listener->OnUiEvent(PauseTimerButtonClicked);
+    }
+}
+
+void ChessUIQt::UpdateHistory(const std::vector<std::string>& history)
+{
+    m_HistoryList->clear();
+    int numMoves = 10;
+    for (int i = 0; i < history.size(); i++) {
+        m_HistoryList->addItem(QString::fromStdString(history[i]));
+    }
+}
+
+void ChessUIQt::UpdateBoard(const BoardRepresentation& newBoard)
 {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -189,7 +223,6 @@ void ChessUIQt::UpdateBoard(const std::array<std::array<std::pair<PieceType, Pie
             m_grid[i][j]->setHighlighted(false);
         }
     }
-
 }
 
 void ChessUIQt::HighlightPossibleMoves(const std::vector<std::pair<int, int>>& possibleMoves)
@@ -223,13 +256,58 @@ void ChessUIQt::ShowPromoteOptions()
 
     if (ok && !item.isEmpty())
     {
-        //TODO
-        //game.promotePawn(parseQStringToPieceType(item))
+        PieceType promoteTo;
 
-        //TODO DELETE ME...
-        QMessageBox notification;
-        notification.setText("You selected " + item);
-        notification.exec();
+        if (item == "Rook")
+            promoteTo = PieceType::rook;
+        else if (item == "Bishop")
+            promoteTo = PieceType::bishop;
+        else if (item == "Queen")
+            promoteTo = PieceType::queen;
+        else if (item == "Knight")
+            promoteTo = PieceType::knight;
+        else throw std::exception("No such piece");
+
+        for (const auto& listener : m_Listeners) {
+            listener->OnPromoteOptionChosen(promoteTo);
+        }
+    }
+}
+
+void ChessUIQt::SetMessageLabel(const std::string& value)
+{
+    m_MessageLabel->setText(QString::fromStdString(value));
+}
+
+void ChessUIQt::SetTimer(const std::string& value, PieceColor color)
+{
+    if (color == PieceColor::black) {
+        m_BlackTimer->setText(QString::fromStdString(value));
+    }
+    else {
+        m_WhiteTimer->setText(QString::fromStdString(value));
+    }
+}
+
+void ChessUIQt::ResetSelected()
+{
+    m_selectedCell.reset();
+}
+
+void ChessUIQt::AddListener(ChessUiQtListener* listener)
+{
+    m_Listeners.push_back(listener);
+}
+
+void ChessUIQt::RemoveListener(ChessUiQtListener* listener)
+{
+    for (auto it = m_Listeners.begin(); it != m_Listeners.end(); ++it)
+    {
+        if (*it == listener)
+        {
+            m_Listeners.erase(it);
+            break;
+        }
     }
 }
 
