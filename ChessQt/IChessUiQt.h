@@ -16,6 +16,7 @@ public:
     virtual void StartGame() = 0;
     virtual void ShowPromoteOptions() = 0;
     virtual void SetMessageLabel(const std::string& value) = 0;
+    virtual void ShowMessageBox(const std::string& value) = 0;
     virtual void SetTimer(const std::string& value, PieceColor color) = 0;
     virtual void ResetSelected() = 0;
 

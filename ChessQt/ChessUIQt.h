@@ -23,7 +23,8 @@ public:
     void ShowPromoteOptions() override;
     void SetMessageLabel(const std::string& value) override;
     void SetTimer(const std::string& value, PieceColor color) override;
-    void ResetSelected();
+    void ShowMessageBox(const std::string& value) override;
+    void ResetSelected() override;
 
     void AddListener(ChessUiQtListener* listener) override;
     void RemoveListener(ChessUiQtListener* listener) override;

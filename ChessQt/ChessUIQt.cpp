@@ -289,6 +289,13 @@ void ChessUIQt::SetTimer(const std::string& value, PieceColor color)
     }
 }
 
+void ChessUIQt::ShowMessageBox(const std::string& value)
+{
+    QMessageBox msgBox;
+    msgBox.setText(QString::fromStdString(value));
+    msgBox.exec();
+}
+
 void ChessUIQt::ResetSelected()
 {
     m_selectedCell.reset();
