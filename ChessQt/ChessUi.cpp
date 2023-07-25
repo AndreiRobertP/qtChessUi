@@ -1,11 +1,11 @@
-#include "ChessUIQt.h"
+#include "ChessUi.h"
 
 
-IChessUiQtPtr IChessUiQt::Produce() {
-    return std::make_shared<ChessUIQt>();
+IChessUiQtPtr IChessUi::Produce() {
+    return std::make_shared<ChessUi>();
 }
 
-ChessUIQt::ChessUIQt(QWidget *parent)
+ChessUi::ChessUi(QWidget *parent)
     : QMainWindow(parent)
 {
     //Widget containing everything
@@ -22,13 +22,13 @@ ChessUIQt::ChessUIQt(QWidget *parent)
     this->setCentralWidget(mainWidget);
 }
 
-ChessUIQt::~ChessUIQt()
+ChessUi::~ChessUi()
 {
     //No delete?
     //https://doc.qt.io/qt-6/objecttrees.html
 }
 
-void ChessUIQt::InitializeMessage(QGridLayout * mainGridLayout)
+void ChessUi::InitializeMessage(QGridLayout * mainGridLayout)
 {
     m_MessageLabel = new QLabel();
     m_MessageLabel->setText("Waiting for white player");
@@ -38,7 +38,7 @@ void ChessUIQt::InitializeMessage(QGridLayout * mainGridLayout)
     mainGridLayout->addWidget(m_MessageLabel, 0, 1, 1, 1);
 }
 
-void ChessUIQt::InitializeButtons(QGridLayout* mainGridLayout)
+void ChessUi::InitializeButtons(QGridLayout* mainGridLayout)
 {
     QPushButton* saveButton = new QPushButton("Save");
     QPushButton* loadButton = new QPushButton("Load");
@@ -53,16 +53,16 @@ void ChessUIQt::InitializeButtons(QGridLayout* mainGridLayout)
     btnGrid->addWidget(restartButton, 0, 2);
     btnGrid->addWidget(drawButton, 0, 3);
 
-    connect(saveButton, &QPushButton::pressed, this, &ChessUIQt::OnSaveButtonClicked);
-    connect(loadButton, &QPushButton::pressed, this, &ChessUIQt::OnLoadButtonClicked);
-    connect(restartButton, &QPushButton::pressed, this, &ChessUIQt::OnRestartButtonClicked);
-    connect(drawButton, &QPushButton::pressed, this, &ChessUIQt::OnDrawButtonClicked);
+    connect(saveButton, &QPushButton::pressed, this, &ChessUi::OnSaveButtonClicked);
+    connect(loadButton, &QPushButton::pressed, this, &ChessUi::OnLoadButtonClicked);
+    connect(restartButton, &QPushButton::pressed, this, &ChessUi::OnRestartButtonClicked);
+    connect(drawButton, &QPushButton::pressed, this, &ChessUi::OnDrawButtonClicked);
 
     buttonContainer->setLayout(btnGrid);
     mainGridLayout->addWidget(buttonContainer, 0, 0, 1, 1);
 }
 
-void ChessUIQt::InitializeTimers(QGridLayout* mainGridLayout)
+void ChessUi::InitializeTimers(QGridLayout* mainGridLayout)
 {
     QWidget* timerContainer = new QWidget();
     QGridLayout* timerGrid = new QGridLayout();
@@ -71,7 +71,7 @@ void ChessUIQt::InitializeTimers(QGridLayout* mainGridLayout)
     m_BlackTimer = new QLabel("00:00:00");
 
     QPushButton* pauseTimerBtn = new QPushButton(" Pause | Resume");
-    connect(pauseTimerBtn, &QPushButton::pressed, this, &ChessUIQt::OnPauseButtonClicked);
+    connect(pauseTimerBtn, &QPushButton::pressed, this, &ChessUi::OnPauseButtonClicked);
 
     QLabel* whiteTimerLbl = new QLabel("    White timer: ");
     m_WhiteTimer = new QLabel("00:00:00");
@@ -88,16 +88,16 @@ void ChessUIQt::InitializeTimers(QGridLayout* mainGridLayout)
     mainGridLayout->addWidget(timerContainer, 2, 0, 1, 2, Qt::AlignCenter);
 }
 
-void ChessUIQt::InitializeHistory(QGridLayout* mainGridLayout)
+void ChessUi::InitializeHistory(QGridLayout* mainGridLayout)
 {
     m_HistoryList = new QListWidget();
     m_HistoryList->setMinimumWidth(250);
     m_HistoryList->setMaximumWidth(350);
-    connect(m_HistoryList, &QListWidget::itemActivated, this, &ChessUIQt::OnHistoryClicked);
+    connect(m_HistoryList, &QListWidget::itemActivated, this, &ChessUi::OnHistoryClicked);
     mainGridLayout->addWidget(m_HistoryList, 1, 0, 1, 1);
 }
 
-void ChessUIQt::InitializeBoard(QGridLayout* mainGridLayout)
+void ChessUi::InitializeBoard(QGridLayout* mainGridLayout)
 {
     QGridLayout* chessGridLayout = new QGridLayout();
     QWidget* board = new QWidget();
@@ -106,7 +106,7 @@ void ChessUIQt::InitializeBoard(QGridLayout* mainGridLayout)
         for (int j = 0; j < 8; j++) {
             m_grid[i][j] = new GridButton({ i,j }, PieceType::none, PieceColor::none);
             chessGridLayout->addWidget(m_grid[i][j], i, j, 1, 1);
-            connect(m_grid[i][j], &GridButton::Clicked, this, &ChessUIQt::OnButtonClicked);
+            connect(m_grid[i][j], &GridButton::Clicked, this, &ChessUi::OnButtonClicked);
         }
     }
 
@@ -114,12 +114,12 @@ void ChessUIQt::InitializeBoard(QGridLayout* mainGridLayout)
     mainGridLayout->addWidget(board, 1, 1, 1, 1);
 }
 
-void ChessUIQt::show()
+void ChessUi::Show()
 {
     QMainWindow::show();
 }
 
-void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)
+void ChessUi::OnButtonClicked(const std::pair<int, int>&position)
 {
     //At second click
     if (m_selectedCell.has_value()) {
@@ -144,7 +144,7 @@ void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)
     }
 }
 
-void ChessUIQt::OnSaveButtonClicked()
+void ChessUi::OnSaveButtonClicked()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
@@ -154,7 +154,7 @@ void ChessUIQt::OnSaveButtonClicked()
         fileNames = dialog.selectedFiles();
 }
 
-void ChessUIQt::OnLoadButtonClicked()
+void ChessUi::OnLoadButtonClicked()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
@@ -164,14 +164,14 @@ void ChessUIQt::OnLoadButtonClicked()
         fileNames = dialog.selectedFiles();
 }
 
-void ChessUIQt::OnRestartButtonClicked()
+void ChessUi::OnRestartButtonClicked()
 {
     for (const auto& listener : m_Listeners) {
-        listener->OnUiEvent(RestartButtonClicked);
+        listener->OnUiEvent(RestartGame);
     }
 }
 
-void ChessUIQt::OnDrawButtonClicked()
+void ChessUi::OnDrawButtonClicked()
 {
     for (const auto& listener : m_Listeners) {
         listener->OnUiEvent(DrawProposed);
@@ -193,23 +193,23 @@ void ChessUIQt::OnDrawButtonClicked()
     }
 }
 
-void ChessUIQt::OnHistoryClicked(QListWidgetItem* item)
+void ChessUi::OnHistoryClicked(QListWidgetItem* item)
 {
     int index = m_HistoryList->currentRow();
     
     for (const auto& listener : m_Listeners) {
-        listener->OnHistoryClicked(index);
+        listener->OnMoveItemSelected(index);
     }
 }
 
-void ChessUIQt::OnPauseButtonClicked()
+void ChessUi::OnPauseButtonClicked()
 {
     for (const auto& listener : m_Listeners) {
         listener->OnUiEvent(PauseTimerButtonClicked);
     }
 }
 
-void ChessUIQt::UpdateHistory(const std::vector<std::string>& history)
+void ChessUi::UpdateMoves(const std::vector<std::string>& history)
 {
     m_HistoryList->clear();
     int numMoves = 10;
@@ -218,7 +218,7 @@ void ChessUIQt::UpdateHistory(const std::vector<std::string>& history)
     }
 }
 
-void ChessUIQt::UpdateBoard(const BoardRepresentation& newBoard)
+void ChessUi::UpdateBoard(const BoardRepresentation& newBoard)
 {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -229,14 +229,14 @@ void ChessUIQt::UpdateBoard(const BoardRepresentation& newBoard)
     }
 }
 
-void ChessUIQt::HighlightPossibleMoves(const std::vector<std::pair<int, int>>& possibleMoves)
+void ChessUi::Highlight(const std::vector<std::pair<int, int>>& possibleMoves)
 {
     for (const auto& position : possibleMoves) {
         m_grid[position.first][position.second]->setHighlighted(true);
     }
 }
 
-void ChessUIQt::ShowPromoteOptions()
+void ChessUi::ShowPromoteOptions()
 {
     QInputDialog dialog;
     QList<QString> options;
@@ -267,17 +267,17 @@ void ChessUIQt::ShowPromoteOptions()
         else throw std::exception("No such piece");
 
         for (const auto& listener : m_Listeners) {
-            listener->OnPromoteOptionChosen(promoteTo);
+            listener->OnPromoteOption(promoteTo);
         }
     }
 }
 
-void ChessUIQt::SetMessageLabel(const std::string& value)
+void ChessUi::SetMessage(const std::string& value)
 {
     m_MessageLabel->setText(QString::fromStdString(value));
 }
 
-void ChessUIQt::SetTimer(const std::string& value, PieceColor color)
+void ChessUi::SetTimer(const std::string& value, PieceColor color)
 {
     if (color == PieceColor::black) {
         m_BlackTimer->setText(QString::fromStdString(value));
@@ -287,14 +287,14 @@ void ChessUIQt::SetTimer(const std::string& value, PieceColor color)
     }
 }
 
-void ChessUIQt::ShowMessageBox(const std::string& value)
+void ChessUi::ShowMessage(const std::string& value)
 {
     QMessageBox msgBox;
     msgBox.setText(QString::fromStdString(value));
     msgBox.exec();
 }
 
-void ChessUIQt::ResetSelected()
+void ChessUi::ResetSelected()
 {
     m_selectedCell.reset();
 
@@ -306,17 +306,17 @@ void ChessUIQt::ResetSelected()
     }
 }
 
-std::optional<std::pair<int, int>> ChessUIQt::GetSelectedPosition()
+std::optional<std::pair<int, int>> ChessUi::GetSelected()
 {
     return m_selectedCell;
 }
 
-void ChessUIQt::AddListener(ChessUiQtListener* listener)
+void ChessUi::AddListener(IChessUiListener* listener)
 {
     m_Listeners.push_back(listener);
 }
 
-void ChessUIQt::RemoveListener(ChessUiQtListener* listener)
+void ChessUi::RemoveListener(IChessUiListener* listener)
 {
     for (auto it = m_Listeners.begin(); it != m_Listeners.end(); ++it)
     {

@@ -21,12 +21,15 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Header Files\API">
+      <UniqueIdentifier>{374173bb-aade-4b9a-8da9-a5fcbe08fc84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="ChessUIQt.h">
+    <QtMoc Include="ChessUi.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClCompile Include="ChessUIQt.cpp">
+    <ClCompile Include="ChessUi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,14 +44,14 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IChessUi.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
     <ClInclude Include="Enums.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\API</Filter>
     </ClInclude>
-    <ClInclude Include="ChessUiQtListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IChessUiQt.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="IChessUiListener.h">
+      <Filter>Header Files\API</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

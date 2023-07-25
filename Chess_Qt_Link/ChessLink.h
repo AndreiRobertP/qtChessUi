@@ -1,20 +1,19 @@
 #pragma once
-#include "IChessUiQt.h"
+#include "IChessUi.h"
 #include "IGame.h"
 #include <array>
 
-class ChessLink : public ChessUiQtListener, public IGameListener
+class ChessLink : public IChessUiListener, public IGameListener
 {
 public:
-    ChessLink();
+    ChessLink(IGame* game, IChessUi* ui);
 
     void OnButtonClicked(const std::pair<int, int>& position, bool isFirstClick) override;
-    void OnFileChosen(const std::string& path, FileOperation operation) override;
+    void OnFileOperation(const std::string& path, FileOperation operation) override;
     void OnUiEvent(UiEvent event) override;
-    void OnHistoryClicked(int item) override;
-    void OnPromoteOptionChosen(PieceType pieceType) override;
+    void OnMoveItemSelected(int item) override;
+    void OnPromoteOption(PieceType pieceType) override;
 
-    void SetUi(IChessUiQtPtr ui);
     void OnStateChanged(EState state);
 
     void Start();
@@ -25,7 +24,7 @@ private:
     std::string PieceTypeToString(PieceType type);
 
 private:
-    IChessUiQtPtr m_Ui;
-    IGamePtr m_Game;
+    IChessUi* m_Ui;
+    IGame* m_Game;
     Position m_LastPosition;
 };

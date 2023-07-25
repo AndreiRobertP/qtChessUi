@@ -10,28 +10,28 @@
 #include <QFileDialog>
 #include <exception>
 
-#include "IChessUiQt.h"
+#include "IChessUi.h"
 
-class ChessUIQt : public QMainWindow, public IChessUiQt
+class ChessUi : public QMainWindow, public IChessUi
 {
     Q_OBJECT
 
 public:
-    ChessUIQt(QWidget *parent = nullptr);
-    ~ChessUIQt() override;
+    ChessUi(QWidget *parent = nullptr);
+    ~ChessUi() override;
 
-    void UpdateHistory(const std::vector<std::string>& history) override;
+    void UpdateMoves(const std::vector<std::string>& history) override;
     void UpdateBoard(const BoardRepresentation& newBoard) override;
-    void HighlightPossibleMoves(const std::vector<std::pair<int, int>>& possibleMoves) override;
+    void Highlight(const std::vector<std::pair<int, int>>& possibleMoves) override;
     void ShowPromoteOptions() override;
-    void SetMessageLabel(const std::string& value) override;
+    void SetMessage(const std::string& value) override;
     void SetTimer(const std::string& value, PieceColor color) override;
-    void ShowMessageBox(const std::string& value) override;
+    void ShowMessage(const std::string& value) override;
     void ResetSelected() override;
-    std::optional<std::pair<int, int>> GetSelectedPosition() override;
+    std::optional<std::pair<int, int>> GetSelected() override;
 
-    void AddListener(ChessUiQtListener* listener) override;
-    void RemoveListener(ChessUiQtListener* listener) override;
+    void AddListener(IChessUiListener* listener) override;
+    void RemoveListener(IChessUiListener* listener) override;
 
 private:
     void InitializeMessage(QGridLayout* mainGridLayout);
@@ -40,7 +40,7 @@ private:
     void InitializeHistory(QGridLayout* mainGridLayout);
     void InitializeBoard(QGridLayout* mainGridLayout);
 
-    void show() override;
+    void Show() override;
 
 private slots:
     void OnButtonClicked(const std::pair<int, int>& position);
@@ -58,5 +58,5 @@ private:
     QLabel* m_MessageLabel;
     QListWidget* m_HistoryList;
     QLabel* m_BlackTimer, *m_WhiteTimer;
-    std::vector<ChessUiQtListener*> m_Listeners;
+    std::vector<IChessUiListener*> m_Listeners;
 };

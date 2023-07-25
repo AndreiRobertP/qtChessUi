@@ -83,17 +83,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtMoc Include="ChessUIQt.h" />
-    <ClCompile Include="ChessUIQt.cpp" />
+    <QtMoc Include="ChessUi.h" />
+    <ClCompile Include="ChessUi.cpp" />
     <ClCompile Include="GridButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GridButton.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessUiQtListener.h" />
+    <ClInclude Include="IChessUiListener.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="IChessUiQt.h" />
+    <ClInclude Include="IChessUi.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -1,9 +1,10 @@
 #include "ChessLink.h"
 
 
-ChessLink::ChessLink()
+ChessLink::ChessLink(IGame* game, IChessUi* ui)
+	: m_Game(game)
+	, m_Ui(ui)
 {
-	m_Game = IGame::Produce();
 	m_Game->AddListener(this);
 }
 
@@ -17,25 +18,25 @@ void ChessLink::OnButtonClicked(const std::pair<int, int>& position, bool isFirs
 
 	if (isFirstClick == false) {
 		try {
-			m_Game->Move(m_Ui->GetSelectedPosition().value(), position);
+			m_Game->Move(m_Ui->GetSelected().value(), position);
 		}
 		catch (std::exception e) {
-			m_Ui->ShowMessageBox(e.what());
+			m_Ui->ShowMessage(e.what());
 			m_Ui->UpdateBoard(ConvertToBoardRepresentation());
 		}
 	}
 	else {
 		try {
-			m_Ui->HighlightPossibleMoves(m_Game->GetMoves(position));
+			m_Ui->Highlight(m_Game->GetMoves(position));
 		}
 		catch (std::exception e) {
-			m_Ui->ShowMessageBox(e.what());
+			m_Ui->ShowMessage(e.what());
 			m_Ui->UpdateBoard(ConvertToBoardRepresentation());
 		}
 	}
 }
 
-void ChessLink::OnFileChosen(const std::string& path, FileOperation operation)
+void ChessLink::OnFileOperation(const std::string& path, FileOperation operation)
 {
 	//TO BE CONTINUED...
 }
@@ -72,48 +73,41 @@ void ChessLink::OnUiEvent(UiEvent event)
 	}
 }
 
-void ChessLink::OnHistoryClicked(int item)
+void ChessLink::OnMoveItemSelected(int item)
 {
 }
 
-void ChessLink::OnPromoteOptionChosen(PieceType pieceType)
+void ChessLink::OnPromoteOption(PieceType pieceType)
 {
 	m_Game->PromoteTo(PieceTypeToString(pieceType), m_LastPosition);
 }
 
-void ChessLink::SetUi(IChessUiQtPtr ui)
-{
-	m_Ui = ui;
-	m_Ui->AddListener(this);
-
-}
-
 void ChessLink::OnStateChanged(EState state) {
 	if (state == EState::Playing) {
-		m_Ui->SetMessageLabel(m_Game->GetTurn() == EColor::Black ? "Black's turn" : "White's turn");
+		m_Ui->SetMessage(m_Game->GetTurn() == EColor::Black ? "Black's turn" : "White's turn");
 		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
 		return;
 	}
 	if (state == EState::Check) {
-		m_Ui->SetMessageLabel(m_Game->GetTurn() == EColor::Black ? "Black's turn - CHECK" : "White's turn - CHECK");
+		m_Ui->SetMessage(m_Game->GetTurn() == EColor::Black ? "Black's turn - CHECK" : "White's turn - CHECK");
 		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
 		return;
 	}
 	if (state == EState::BlackWon) {
-		m_Ui->SetMessageLabel("");
-		m_Ui->ShowMessageBox("Black won!");
+		m_Ui->SetMessage("");
+		m_Ui->ShowMessage("Black won!");
 		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
 		return;
 	}
 	if (state == EState::WhiteWon) {
-		m_Ui->SetMessageLabel("");
-		m_Ui->ShowMessageBox("White won!");
+		m_Ui->SetMessage("");
+		m_Ui->ShowMessage("White won!");
 		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
 		return;
 	}
 	if (state == EState::Draw) {
-		m_Ui->SetMessageLabel("");
-		m_Ui->ShowMessageBox("Draw!");
+		m_Ui->SetMessage("");
+		m_Ui->ShowMessage("Draw!");
 		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
 		return;
 	}
@@ -125,7 +119,8 @@ void ChessLink::OnStateChanged(EState state) {
 
 void ChessLink::Start()
 {
-	m_Ui->SetMessageLabel(m_Game->GetTurn() == EColor::Black ? "Black's turn" : "White's turn");
+	m_Ui->Show();
+	m_Ui->SetMessage(m_Game->GetTurn() == EColor::Black ? "Black's turn" : "White's turn");
 	m_Ui->UpdateBoard(ConvertToBoardRepresentation());
 }
 
