@@ -11,6 +11,10 @@ void ChessLink::OnButtonClicked(const std::pair<int, int>& position, bool isFirs
 {
 	m_LastPosition = position;
 
+	if (m_Game->IsOver()) {
+		return;
+	}
+
 	if (isFirstClick == false) {
 		try {
 			m_Game->Move(m_Ui->GetSelectedPosition().value(), position);
@@ -33,11 +37,39 @@ void ChessLink::OnButtonClicked(const std::pair<int, int>& position, bool isFirs
 
 void ChessLink::OnFileChosen(const std::string& path, FileOperation operation)
 {
+	//TO BE CONTINUED...
 }
 
 void ChessLink::OnUiEvent(UiEvent event)
 {
-
+	if (event == UiEvent::RestartButtonClicked)
+	{
+		m_Ui->ResetSelected();
+		m_Game->RemoveListener(this);
+		m_Game = IGame::Produce();
+		m_Game->AddListener(this);
+		Start();
+		return;
+	}
+	if (event == UiEvent::DrawProposed)
+	{
+		m_Game->ProposeDraw();
+		return;
+	}
+	if (event == UiEvent::DrawAccepted)
+	{
+		m_Game->DrawResponse(true);
+		return;
+	}
+	if (event == UiEvent::DrawDenied)
+	{
+		m_Game->DrawResponse(false);
+		return;
+	}
+	if (event == UiEvent::PauseTimerButtonClicked)
+	{
+		//TO BE CONTINUED...
+	}
 }
 
 void ChessLink::OnHistoryClicked(int item)
@@ -165,7 +197,7 @@ std::string ChessLink::PieceTypeToString(PieceType type)
 	case PieceType::pawn:
 		return "Pawn";
 	default:
-		return "Unknown"; // Return "Unknown" or an empty string for invalid PieceType.
+		return "Unknown";
 	}
 }
 

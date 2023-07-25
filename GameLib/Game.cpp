@@ -154,8 +154,8 @@ void Game::Move(Position p1, Position p2)
 		}
 
 		if (m_gameboard.IsCheck(m_gameboard.FindKing(m_turn == EColor::Black ? EColor::White : EColor::Black), m_turn == EColor::Black ? EColor::White : EColor::Black)) {
-			UpdateState(EState::Check);
 			SwitchTurn();
+			UpdateState(EState::Check);
 			return;
 		}
 
@@ -177,8 +177,8 @@ void Game::Move(Position p1, Position p2)
 
 void Game::ProposeDraw()
 {
-	UpdateState(EState::DrawIsProposed);
 	SwitchTurn();
+	UpdateState(EState::DrawIsProposed);
 }
 
 void Game::DrawResponse(bool draw)
@@ -189,8 +189,8 @@ void Game::DrawResponse(bool draw)
 	}
 	else
 	{
-		UpdateState(EState::Playing);
 		SwitchTurn();
+		UpdateState(EState::Playing);
 	}
 }
 
@@ -251,8 +251,8 @@ void Game::PromoteTo(const std::string& string, Position p)
 		UpdateState(EState::WhiteWon);
 	}
 
-	UpdateState(EState::Playing);
 	SwitchTurn();
+	UpdateState(EState::Playing);
 }
 
 void Game::SwitchTurn()

@@ -123,13 +123,15 @@ void ChessUIQt::OnButtonClicked(const std::pair<int, int>&position)
 {
     //At second click
     if (m_selectedCell.has_value()) {
-        for (const auto& listener : m_Listeners) {
-            listener->OnButtonClicked(position, false);
+        if (position != m_selectedCell.value()) {
+            for (const auto& listener : m_Listeners) {
+                listener->OnButtonClicked(position, false);
+            }
         }
 
         //Unselect prev. pressed button
         m_grid[m_selectedCell.value().first][m_selectedCell.value().second]->setSelected(false);
-        m_selectedCell.reset();
+        ResetSelected();
     }
     //At first click
     else {
@@ -234,12 +236,6 @@ void ChessUIQt::HighlightPossibleMoves(const std::vector<std::pair<int, int>>& p
     }
 }
 
-void ChessUIQt::StartGame()
-{
-    //TODO MODIFY ME OR DELETE ME
-    UpdateBoard(Helper::getDefaultBoard());
-}
-
 void ChessUIQt::ShowPromoteOptions()
 {
     QInputDialog dialog;
@@ -301,6 +297,13 @@ void ChessUIQt::ShowMessageBox(const std::string& value)
 void ChessUIQt::ResetSelected()
 {
     m_selectedCell.reset();
+
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            m_grid[i][j]->setSelected(false);
+            m_grid[i][j]->setHighlighted(false);
+        }
+    }
 }
 
 std::optional<std::pair<int, int>> ChessUIQt::GetSelectedPosition()

@@ -13,8 +13,6 @@ using IChessUiQtPtr = std::shared_ptr<class IChessUiQt>;
 
 class IChessUiQt {
 public:
-    virtual void StartGame() = 0;
-
     virtual void UpdateHistory(const std::vector<std::string>& history) = 0;
     
     virtual void UpdateBoard(const BoardRepresentation& newBoard) = 0;
