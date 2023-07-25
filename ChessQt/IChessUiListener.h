@@ -7,7 +7,7 @@
 
 enum UiEvent
 {
-    RestartButtonClicked,
+    RestartGame,
     PauseTimerButtonClicked,
     DrawProposed,
     DrawAccepted,

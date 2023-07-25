@@ -43,11 +43,11 @@ void ChessLink::OnFileOperation(const std::string& path, FileOperation operation
 
 void ChessLink::OnUiEvent(UiEvent event)
 {
-	if (event == UiEvent::RestartButtonClicked)
+	if (event == UiEvent::RestartGame)
 	{
 		m_Ui->ResetSelected();
 		m_Game->RemoveListener(this);
-		m_Game = IGame::Produce();
+		//m_Game->Restart();
 		m_Game->AddListener(this);
 		Start();
 		return;
