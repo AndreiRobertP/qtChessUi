@@ -3,6 +3,7 @@
 #include <utility>
 #include <string>
 #include <memory>
+#include <optional>
 #include "Enums.h"
 #include "ChessUiQtListener.h"
 
@@ -31,6 +32,8 @@ public:
 
     virtual void AddListener(ChessUiQtListener* listener) = 0;
     virtual void RemoveListener(ChessUiQtListener* listener) = 0;
+
+    virtual std::optional<std::pair<int, int>> GetSelectedPosition() = 0;
 
     virtual void show() = 0;
 

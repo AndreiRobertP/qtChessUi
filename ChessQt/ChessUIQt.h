@@ -29,6 +29,7 @@ public:
     void SetTimer(const std::string& value, PieceColor color) override;
     void ShowMessageBox(const std::string& value) override;
     void ResetSelected() override;
+    std::optional<std::pair<int, int>> GetSelectedPosition() override;
 
     void AddListener(ChessUiQtListener* listener) override;
     void RemoveListener(ChessUiQtListener* listener) override;

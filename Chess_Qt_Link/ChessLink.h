@@ -1,7 +1,9 @@
 #pragma once
 #include "IChessUiQt.h"
+#include "IGame.h"
+#include <array>
 
-class ChessLink : public ChessUiQtListener
+class ChessLink : public ChessUiQtListener, public IGameListener
 {
 public:
     ChessLink();
@@ -13,7 +15,17 @@ public:
     void OnPromoteOptionChosen(PieceType pieceType) override;
 
     void SetUi(IChessUiQtPtr ui);
+    void OnStateChanged(EState state);
+
+    void Start();
+
+private:
+    BoardRepresentation ConvertToBoardRepresentation();
+    PieceType ConvertToType(EPieceType type);
+    std::string PieceTypeToString(PieceType type);
+
 private:
     IChessUiQtPtr m_Ui;
+    IGamePtr m_Game;
+    Position m_LastPosition;
 };
-

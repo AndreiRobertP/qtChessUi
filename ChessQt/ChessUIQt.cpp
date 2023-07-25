@@ -303,6 +303,11 @@ void ChessUIQt::ResetSelected()
     m_selectedCell.reset();
 }
 
+std::optional<std::pair<int, int>> ChessUIQt::GetSelectedPosition()
+{
+    return m_selectedCell;
+}
+
 void ChessUIQt::AddListener(ChessUiQtListener* listener)
 {
     m_Listeners.push_back(listener);
