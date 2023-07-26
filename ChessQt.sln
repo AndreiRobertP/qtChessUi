@@ -10,7 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chess_Qt_Link", "Chess_Qt_L
 		{5BE5AC16-7A1D-496A-8262-1ED966AB7BE6} = {5BE5AC16-7A1D-496A-8262-1ED966AB7BE6}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameLib", "GameLib\GameLib.vcxproj", "{5BE5AC16-7A1D-496A-8262-1ED966AB7BE6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameLib", "LibSolution\GameLib\GameLib\GameLib.vcxproj", "{5BE5AC16-7A1D-496A-8262-1ED966AB7BE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -129,7 +129,7 @@ void ChessUi::OnButtonClicked(const std::pair<int, int>&position)
             }
         }
 
-        //Unselect prev. pressed button
+        //Deselect prev. pressed button
         m_grid[m_selectedCell.value().first][m_selectedCell.value().second]->setSelected(false);
         ResetSelected();
     }

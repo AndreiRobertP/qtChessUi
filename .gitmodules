@@ -1,0 +1,3 @@
+[submodule "ChessSol"]
+	path = ChessSol
+	url = ../../Stoica-David/Chess-Application.git

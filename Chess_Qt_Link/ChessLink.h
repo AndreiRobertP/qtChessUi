@@ -14,7 +14,11 @@ public:
     void OnMoveItemSelected(int item) override;
     void OnPromoteOption(PieceType pieceType) override;
 
-    void OnStateChanged(EState state);
+	void OnMove();
+	void OnGameOver();
+	void OnDraw();
+    void OnChoosePiece(Position);
+    void OnCheck();
 
     void Start();
 

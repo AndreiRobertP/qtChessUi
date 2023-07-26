@@ -6,6 +6,7 @@ ChessLink::ChessLink(IGame* game, IChessUi* ui)
 	, m_Ui(ui)
 {
 	m_Game->AddListener(this);
+	m_Ui->AddListener(this);
 }
 
 void ChessLink::OnButtonClicked(const std::pair<int, int>& position, bool isFirstClick)
@@ -46,8 +47,7 @@ void ChessLink::OnUiEvent(UiEvent event)
 	if (event == UiEvent::RestartGame)
 	{
 		m_Ui->ResetSelected();
-		m_Game->RemoveListener(this);
-		//m_Game->Restart();
+		m_Game->Restart();
 		m_Game->AddListener(this);
 		Start();
 		return;
@@ -82,39 +82,34 @@ void ChessLink::OnPromoteOption(PieceType pieceType)
 	m_Game->PromoteTo(PieceTypeToString(pieceType), m_LastPosition);
 }
 
-void ChessLink::OnStateChanged(EState state) {
-	if (state == EState::Playing) {
-		m_Ui->SetMessage(m_Game->GetTurn() == EColor::Black ? "Black's turn" : "White's turn");
-		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
-		return;
-	}
-	if (state == EState::Check) {
-		m_Ui->SetMessage(m_Game->GetTurn() == EColor::Black ? "Black's turn - CHECK" : "White's turn - CHECK");
-		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
-		return;
-	}
-	if (state == EState::BlackWon) {
-		m_Ui->SetMessage("");
-		m_Ui->ShowMessage("Black won!");
-		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
-		return;
-	}
-	if (state == EState::WhiteWon) {
-		m_Ui->SetMessage("");
-		m_Ui->ShowMessage("White won!");
-		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
-		return;
-	}
-	if (state == EState::Draw) {
-		m_Ui->SetMessage("");
-		m_Ui->ShowMessage("Draw!");
-		m_Ui->UpdateBoard(ConvertToBoardRepresentation());
-		return;
-	}
-	if (state == EState::ChoosePiece) {
-		m_Ui->ShowPromoteOptions();
-		return;
-	}
+void ChessLink::OnMove()
+{
+	m_Ui->UpdateBoard(ConvertToBoardRepresentation());
+	m_Ui->SetMessage(m_Game->GetTurn() == EColor::Black ? "Black's turn" : "White's turn");
+}
+
+void ChessLink::OnGameOver()
+{
+	m_Ui->UpdateBoard(ConvertToBoardRepresentation());
+	m_Ui->ShowMessage("Game over");
+}
+
+void ChessLink::OnDraw()
+{
+	m_Ui->UpdateBoard(ConvertToBoardRepresentation());
+	m_Ui->ShowMessage("Draw");
+}
+
+void ChessLink::OnChoosePiece(Position)
+{
+	m_Ui->UpdateBoard(ConvertToBoardRepresentation());
+	m_Ui->ShowPromoteOptions();
+}
+
+void ChessLink::OnCheck()
+{
+	m_Ui->UpdateBoard(ConvertToBoardRepresentation());
+	m_Ui->ShowMessage("Check!");
 }
 
 void ChessLink::Start()

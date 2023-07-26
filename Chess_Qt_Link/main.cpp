@@ -4,14 +4,14 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    
-    auto game = IGame::Produce();
-    auto ui = IChessUi::Produce();
+	QApplication a(argc, argv);
 
-    ChessLink chessLink(game.get(), ui.get());
-    
-    chessLink.Start();
-    
-    return a.exec();
+	auto game = IGame::Produce();
+	auto ui = IChessUi::Produce();
+
+	ChessLink chessLink(game.get(), ui.get());
+
+	chessLink.Start();
+
+	return a.exec();
 }
