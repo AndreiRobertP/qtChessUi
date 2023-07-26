@@ -8,6 +8,8 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QClipboard>
+#include <QApplication>
 #include <exception>
 
 #include "IChessUi.h"
@@ -25,6 +27,7 @@ public:
     void Highlight(const std::vector<std::pair<int, int>>& possibleMoves) override;
     void ShowPromoteOptions() override;
     void SetMessage(const std::string& value) override;
+    void SetClipboard(const std::string& value) override;
     void SetTimer(const std::string& value, PieceColor color) override;
     void ShowMessage(const std::string& value) override;
     void ResetSelected() override;
@@ -51,6 +54,8 @@ private slots:
     void OnDrawButtonClicked();
     void OnHistoryClicked(QListWidgetItem* item);
     void OnPauseButtonClicked();
+    void OnCopyFENButtonClicked();
+    void OnCopyPGNButtonClicked();
 
 private:
     std::array<std::array<GridButton*, 8>, 8> m_grid;

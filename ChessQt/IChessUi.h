@@ -30,6 +30,7 @@ public:
     
     virtual void SetMessage(const std::string& value) = 0;
     virtual void ShowMessage(const std::string& value) = 0;
+    virtual void SetClipboard(const std::string& value) = 0;
 
     virtual void UpdateMoves(const MovesList& moves) = 0;
     

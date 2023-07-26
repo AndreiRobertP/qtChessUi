@@ -12,6 +12,8 @@ enum UiEvent
     DrawProposed,
     DrawAccepted,
     DrawDenied,
+    CopyFEN,
+    CopyPGN,
 };
 
 enum FileOperation {

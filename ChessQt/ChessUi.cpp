@@ -44,6 +44,8 @@ void ChessUi::InitializeButtons(QGridLayout* mainGridLayout)
     QPushButton* loadButton = new QPushButton("Load");
     QPushButton* restartButton = new QPushButton("Restart");
     QPushButton* drawButton = new QPushButton("Draw");
+    QPushButton* copyFENButton = new QPushButton("Copy FEN");
+    QPushButton* copyPGNButton = new QPushButton("Copy PGN");
 
     QWidget* buttonContainer = new QWidget();
     QGridLayout* btnGrid = new QGridLayout();
@@ -52,11 +54,15 @@ void ChessUi::InitializeButtons(QGridLayout* mainGridLayout)
     btnGrid->addWidget(loadButton, 0, 1);
     btnGrid->addWidget(restartButton, 0, 2);
     btnGrid->addWidget(drawButton, 0, 3);
+    btnGrid->addWidget(copyFENButton, 1, 0, 1, 2);
+    btnGrid->addWidget(copyPGNButton, 1, 2, 1, 2);
 
     connect(saveButton, &QPushButton::pressed, this, &ChessUi::OnSaveButtonClicked);
     connect(loadButton, &QPushButton::pressed, this, &ChessUi::OnLoadButtonClicked);
     connect(restartButton, &QPushButton::pressed, this, &ChessUi::OnRestartButtonClicked);
     connect(drawButton, &QPushButton::pressed, this, &ChessUi::OnDrawButtonClicked);
+    connect(copyFENButton, &QPushButton::pressed, this, &ChessUi::OnCopyFENButtonClicked);
+    connect(copyPGNButton, &QPushButton::pressed, this, &ChessUi::OnCopyPGNButtonClicked);
 
     buttonContainer->setLayout(btnGrid);
     mainGridLayout->addWidget(buttonContainer, 0, 0, 1, 1);
@@ -209,6 +215,20 @@ void ChessUi::OnPauseButtonClicked()
     }
 }
 
+void ChessUi::OnCopyFENButtonClicked()
+{
+    for (const auto& listener : m_Listeners) {
+        listener->OnUiEvent(CopyFEN);
+    }
+}
+
+void ChessUi::OnCopyPGNButtonClicked()
+{
+	for (const auto& listener : m_Listeners) {
+		listener->OnUiEvent(CopyPGN);
+	}
+}
+
 void ChessUi::UpdateMoves(const std::vector<std::string>& history)
 {
     m_HistoryList->clear();
@@ -275,6 +295,12 @@ void ChessUi::ShowPromoteOptions()
 void ChessUi::SetMessage(const std::string& value)
 {
     m_MessageLabel->setText(QString::fromStdString(value));
+}
+
+void ChessUi::SetClipboard(const std::string& value)
+{
+	QClipboard* clipboard = QApplication::clipboard();
+    clipboard->setText(QString::fromStdString(value));
 }
 
 void ChessUi::SetTimer(const std::string& value, PieceColor color)
